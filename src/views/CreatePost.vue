@@ -1,18 +1,28 @@
 <template>
-  <h2>let's create a post shall we</h2>
-  <input type="text" placeholder="Title" v-model="blogTitle" />
-  <input type="text" placeholder="Subtitle" v-model="blogSubtitle" />
-  <div id="editor">
-    <p>This is some text: {{ blogContent }}</p>
-    <QuillEditor
-      theme="snow"
-      toolbar="full"
-      ref="editor"
-      contentType="html"
-      v-model:content="blogContent"
-    />
+  <div>
+    <div class="error-message" v-if="!error">
+      <p><span class="error">Error: </span> {{ errorMessage }}</p>
+    </div>
+    <div class="blog-info">
+      <input type="text" placeholder="Title" v-model="blogTitle" />
+      <input type="text" placeholder="Subtitle" v-model="blogSubtitle" />
+      <div class="upload-file">
+        <label for="blog-photo">Upload Cover Photo</label>
+        <input type="file" ref="blogPhoto" id="blog-photo" accept=".png, .jpg, .jpeg"> 
+        <button class="preview">Preview Photo</button> 
+      </div>
+      <div id="editor">
+        <QuillEditor
+          theme="snow"
+          toolbar="full"
+          ref="editor"
+          contentType="html"
+          v-model:content="blogContent"
+        />
+      </div>
+      <button @click="addBlog">Publish Blog</button>
+    </div>
   </div>
-  <button @click="addBlog">Publish Blog</button>
 </template>
 
 <script>
@@ -30,6 +40,8 @@ export default {
       blogTitle: "",
       blogSubtitle: "",
       blogContent: "",
+      error: false,
+      errorMessage: "",
     };
   },
   methods: {
