@@ -3,6 +3,7 @@
   <div class="blog" v-for="blog in blogs" :key="blog.id">
     <h1>{{ blog.title }}</h1>
     <h4>{{ blog.subtitle }}</h4>
+    <div v-if="blog.content" v-html="blog.content"></div>
   </div>
 </template>
 
@@ -10,10 +11,7 @@
 import { ref } from "@vue/reactivity";
 import { db } from "../firebase/config";
 import { collection, getDocs } from "firebase/firestore";
-let blogs = ref([
-  { title: "sophia", subtitle: "sharif", id: 1 },
-  { title: "nadia", subtitle: "sharif", id: 2 },
-]);
+let blogs = ref([]);
 const colRef = collection(db, "blogs");
 blogs = ref([]);
 async function getBlogs() {
