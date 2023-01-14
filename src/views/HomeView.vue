@@ -3,6 +3,7 @@
   <div class="blog" v-for="blog in blogs" :key="blog.id">
     <h1>{{ blog.title }}</h1>
     <h4>{{ blog.subtitle }}</h4>
+    <p>{{ blog.date }}</p>
     <div v-if="blog.content" v-html="blog.content"></div>
   </div>
 </template>
@@ -11,6 +12,8 @@
 import { ref } from "@vue/reactivity";
 import { db } from "../firebase/config";
 import { collection, getDocs } from "firebase/firestore";
+import toDateTime from "../composables/toDateTime";
+
 let blogs = ref([]);
 const colRef = collection(db, "blogs");
 blogs = ref([]);
@@ -19,7 +22,13 @@ async function getBlogs() {
     const snap = await getDocs(colRef);
     let docs = [];
     snap.docs.forEach((doc) => {
-      docs.push({ ...doc.data(), id: doc.id });
+      docs.push({
+        id: doc.id,
+        title: doc.data().title,
+        subtitle: doc.data().subtitle,
+        content: doc.data().content,
+        date: toDateTime(doc.data().date.seconds),
+      });
     });
     blogs.value = docs;
   } catch (e) {

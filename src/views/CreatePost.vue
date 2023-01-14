@@ -17,7 +17,7 @@
 
 <script>
 import { db } from "../firebase/config";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, Timestamp } from "firebase/firestore";
 import { QuillEditor } from "@vueup/vue-quill";
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
 
@@ -39,6 +39,7 @@ export default {
         title: this.blogTitle,
         subtitle: this.blogSubtitle,
         content: this.blogContent,
+        date: Timestamp.now(),
       });
     },
   },
