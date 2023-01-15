@@ -1,5 +1,9 @@
 <template>
   <div>
+    <!-- conditional components -->
+    <BlogPhotoPreview v-if="blogStore.previewEnabled" />
+    <LoadingSign v-if="loading" />
+    <!--  post component -->
     <div class="error-message" v-if="error">
       <p><span class="error">Error: </span> {{ errorMessage }}</p>
     </div>
@@ -16,7 +20,6 @@
           @change="fileChange"
         />
         <button class="preview" @click="enablePreview">Preview Photo</button>
-        <BlogPhotoPreview v-if="blogStore.previewEnabled" />
       </div>
       <div id="editor">
         <QuillEditor
@@ -36,7 +39,7 @@
 // Firebase
 import { db, storage } from "../firebase/config";
 import { collection, addDoc, Timestamp } from "firebase/firestore";
-import { ref, uploadBytes } from "firebase/storage";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 // Quill
 import { QuillEditor } from "@vueup/vue-quill";
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
@@ -44,11 +47,13 @@ import "@vueup/vue-quill/dist/vue-quill.snow.css";
 import { useBlogStore } from "../stores/BlogStore";
 // Components
 import BlogPhotoPreview from "../components/BlogPhotoPreview.vue";
+import LoadingSign from "../components/LoadingSign.vue";
 
 export default {
   components: {
     QuillEditor,
     BlogPhotoPreview,
+    LoadingSign,
   },
   data() {
     return {
@@ -56,6 +61,7 @@ export default {
       blogStore: useBlogStore(),
       error: false,
       errorMessage: "",
+      loading: false,
     };
   },
   methods: {
@@ -83,20 +89,30 @@ export default {
         }, 5000);
         return;
       }
-      // upload text to firestore
+      this.uploadBlogInfo()
+    },
+    async uploadBlogInfo() {
+      
+      this.loading = true;
       const col = collection(db, "blogs");
-      addDoc(col, {
+      const imageRef = ref(storage, `images/${this.blogStore.coverPhotoName}`);
+      
+      // upload cover image to storage
+      await uploadBytes(imageRef, this.file);
+      
+      // upload text to firestore
+      const downloadURL = await getDownloadURL(imageRef)
+      await addDoc(col, {
         title: this.blogStore.title,
         subtitle: this.blogStore.subtitle,
         content: this.blogStore.content,
         date: Timestamp.now(),
-      });
-      // upload cover image to storage
-      const imageRef = ref(
-        storage,
-        `images/${this.blogStore.coverPhotoName}`
-      );
-      uploadBytes(imageRef, this.file);
+        coverPhoto: downloadURL
+      })
+
+      // send to home screen
+      this.$router.push("/");
+      
     },
     fileChange() {
       this.file = this.$refs.blogPhoto.files[0];
