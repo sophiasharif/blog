@@ -34,8 +34,9 @@
 
 <script>
 // Firebase
-import { db } from "../firebase/config";
+import { db, storage } from "../firebase/config";
 import { collection, addDoc, Timestamp } from "firebase/firestore";
+import { ref, uploadBytes } from "firebase/storage";
 // Quill
 import { QuillEditor } from "@vueup/vue-quill";
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
@@ -59,6 +60,30 @@ export default {
   },
   methods: {
     addBlog() {
+      // check content is filled out
+      if (
+        this.blogStore.title.length === 0 ||
+        this.blogStore.subtitle.length === 0 ||
+        this.blogStore.content.length === 0
+      ) {
+        this.error = true;
+        this.errorMessage =
+          "Please make sure the blog title, subtitle, and content have been filled out!";
+        setTimeout(() => {
+          this.error = false;
+        }, 10000);
+        return;
+      }
+      // check cover photo is uploaded
+      if (!this.file) {
+        this.error = true;
+        this.errorMessage = "Please add a cover photo!";
+        setTimeout(() => {
+          this.error = false;
+        }, 5000);
+        return;
+      }
+      // upload text to firestore
       const col = collection(db, "blogs");
       addDoc(col, {
         title: this.blogStore.title,
@@ -66,13 +91,17 @@ export default {
         content: this.blogStore.content,
         date: Timestamp.now(),
       });
+      // upload cover image to storage
+      const imageRef = ref(
+        storage,
+        `images/${this.blogStore.coverPhotoName}`
+      );
+      uploadBytes(imageRef, this.file);
     },
     fileChange() {
       this.file = this.$refs.blogPhoto.files[0];
       this.blogStore.coverPhotoName = this.file.name;
       this.blogStore.coverPhotoURL = URL.createObjectURL(this.file);
-      console.log(this.blogStore.coverPhotoName);
-      console.log(this.blogStore.coverPhotoURL);
     },
     enablePreview() {
       this.blogStore.previewEnabled = true;
