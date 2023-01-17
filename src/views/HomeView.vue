@@ -1,47 +1,57 @@
 <template>
-  welcome to the blog
-  <div class="blog" v-for="blog in blogs" :key="blog.id">
-    <h1>{{ blog.title }}</h1>
-    <h4>{{ blog.subtitle }}</h4>
-    <p>{{ blog.date }}</p>
-    <div v-if="blog.content" v-html="blog.content"></div>
+  <div class="wrapper">
+    <HeroSection />
+    <!-- <div class="container">
+      <div class="info">
+        <div></div>
+        <div class="intro">
+          <h1>Sophia Sharif</h1>
+        </div>
+      </div>
+    </div> -->
   </div>
 </template>
 
-<script setup>
-import { ref } from "@vue/reactivity";
-import { db } from "../firebase/config";
-import { collection, getDocs } from "firebase/firestore";
-import toDateTime from "../composables/toDateTime";
+<script>
+import HeroSection from "../components/HeroSection.vue";
 
-let blogs = ref([]);
-const colRef = collection(db, "blogs");
-blogs = ref([]);
-async function getBlogs() {
-  try {
-    const snap = await getDocs(colRef);
-    let docs = [];
-    snap.docs.forEach((doc) => {
-      docs.push({
-        id: doc.id,
-        title: doc.data().title,
-        subtitle: doc.data().subtitle,
-        content: doc.data().content,
-        date: toDateTime(doc.data().date.seconds),
-      });
-    });
-    blogs.value = docs;
-  } catch (e) {
-    console.log("ERROR: ", e);
-  }
-}
-getBlogs();
+export default {
+  components: {
+    HeroSection,
+  },
+};
 </script>
 
 <style scoped>
-.blog {
-  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-  width: 60%;
+.wrapper {
+  /* decimal value is aspect ratio of background image */
+  max-width: min(calc(100vh * 1.6));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   margin: 0 auto;
 }
+
+/* .content {
+  height: 800px;
+  background: blue;
+}
+.container {
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 4fr 7fr;
+}
+.info {
+  display: grid;
+  place-items: center;
+  position: relative;
+  bottom: 200px;
+}
+.intro h1 {
+  font-family: Georgia, "Times New Roman", Times, serif;
+  font-size: 3rem;
+  margin-left: 3rem;
+  margin-top: 2rem;
+  color: #D19B63;
+} */
 </style>

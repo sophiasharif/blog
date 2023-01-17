@@ -10,7 +10,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .loading {
     position: fixed;
     top: 0;

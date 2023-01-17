@@ -36,8 +36,10 @@ export default {
   width: 100%;
 }
 .modal-content {
-  display: grid;
-  place-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: center
+  ;
   position: relative;
   border-radius: 12px;
   background-color: #fff;
@@ -55,7 +57,6 @@ ion-icon {
   font-size: 24px;
 }
 img {
-  display: block;
   max-width: 100%;
   max-height: 100%;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
