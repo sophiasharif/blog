@@ -20,8 +20,8 @@
   background-position-x: center;
   position: relative;
   /* decimal value is aspect ratio of background image*/
-  height: min(calc(100vw * 0.625), 100vh);
-  width: min(calc(100vh * 1.6), 100%);
+  height: min(calc(100vw * (1/var(--aspect-ratio))), 100vh);
+  width: min(calc(100vh * var(--aspect-ratio)), 100%);
   box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
 }
 
@@ -72,7 +72,7 @@ img {
   width: 4%;
 }
 h1 {
-    color: #FFDEAD;
+    color: var(--cream);
     text-align: left;
     font-size: 4vw;
     position: absolute;

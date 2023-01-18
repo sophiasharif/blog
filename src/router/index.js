@@ -1,29 +1,48 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-import CreatePost from '../views/CreatePost.vue'
-import AllPosts from '../views/AllPosts.vue'
+import { createRouter, createWebHistory } from "vue-router";
+import HomeView from "../views/HomeView.vue";
+import CreatePost from "../views/CreatePost.vue";
+import AllPosts from "../views/AllPosts.vue";
+import LoginView from "../views/LoginView.vue";
+
+// firebase imports
+import { auth } from "../firebase/config";
+
+function requireAuth(to, from, next) {
+  let user = auth.currentUser;
+  if (!user) {
+    next({ name: "Login" });
+  } else {
+    next();
+  }
+}
 
 const routes = [
   {
-    path: '/',
-    name: 'Home',
-    component: HomeView
+    path: "/",
+    name: "Home",
+    component: HomeView,
   },
   {
-    path: '/create-post',
-    name: 'CreatePost',
-    component: CreatePost
+    path: "/create-post",
+    name: "CreatePost",
+    component: CreatePost,
+    beforeEnter: requireAuth,
   },
   {
-    path: '/all-posts',
-    name: 'AllPosts',
-    component: AllPosts
-  }
-]
+    path: "/all-posts",
+    name: "AllPosts",
+    component: AllPosts,
+  },
+  {
+    path: "/login",
+    name: "Login",
+    component: LoginView,
+  },
+];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  routes
-})
+  routes,
+});
 
-export default router
+export default router;
