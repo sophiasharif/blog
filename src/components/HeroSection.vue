@@ -7,7 +7,10 @@
     <img src="../assets/hero-section/small-bird-1.png" id="small-bird-1" />
     <img src="../assets/hero-section/small-bird-2.png" id="small-bird-2" />
     <img src="../assets/hero-section/small-bird-3.png" id="small-bird-3" />
-        <h1 class="name">Sophia Sharif</h1>
+    <h1 class="name">Sophia Sharif</h1>
+    <div class="buttons">
+      <button @click="$router.push({name: 'AllPosts'})">See Posts</button>
+    </div>
   </div>
 </template>
 
@@ -20,7 +23,7 @@
   background-position-x: center;
   position: relative;
   /* decimal value is aspect ratio of background image*/
-  height: min(calc(100vw * (1/var(--aspect-ratio))), 100vh);
+  height: min(calc(100vw * (1 / var(--aspect-ratio))), 100vh);
   width: min(calc(100vh * var(--aspect-ratio)), 100%);
   box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
 }
@@ -54,32 +57,43 @@ img {
   width: 12%;
 }
 #scrap-1 {
-    animation: up-down 5.5s ease infinite;
+  animation: up-down 5.5s ease infinite;
   left: 40%;
   top: 35%;
   width: 5%;
 }
 #scrap-2 {
-    animation: up-down 4.5s ease infinite;
+  animation: up-down 4.5s ease infinite;
   left: 23%;
   top: 55%;
   width: 5%;
 }
 #scrap-3 {
-    animation: up-down 3s ease infinite;
+  animation: up-down 3s ease infinite;
   left: 10%;
   top: 15%;
   width: 4%;
 }
 h1 {
-    color: var(--cream);
-    text-align: left;
-    font-size: 4vw;
-    position: absolute;
-    width: 20%;
-    left: 15%;
-    top: 20%;
+  color: var(--cream);
+  text-align: left;
+  font-size: 4vw;
+  position: absolute;
+  width: 20%;
+  left: 15%;
+  top: 20%;
+}
+.buttons button {
+  position: absolute;
+  left: 15%;
+  top: 47%;
 
+  background-color: var(--cream); 
+  border: none;
+  font: inherit;
+  padding: .7rem 1rem;
+  border-radius: 1rem;
+  font-size: 1rem;
 }
 
 @keyframes up-down {

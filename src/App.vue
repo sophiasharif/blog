@@ -22,6 +22,7 @@ export default {
   --black: #17141d;
   --cream: #FFDEAD;
   --white: #EDEDF1;
+  --gray-light: #CAC8D0;
 }
 *, *::before, *::after {
   box-sizing: border-box;
@@ -37,7 +38,6 @@ img {
   font-family: Georgia, "Times New Roman", Times, serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: var(--white);
 }
 </style>
