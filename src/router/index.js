@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import CreatePost from "../views/CreatePost.vue";
+import PostPreview from "../views/PostPreview.vue";
 import AllPosts from "../views/AllPosts.vue";
 import LoginView from "../views/LoginView.vue";
 
@@ -26,6 +27,12 @@ const routes = [
     path: "/create-post",
     name: "CreatePost",
     component: CreatePost,
+    beforeEnter: requireAuth,
+  },
+  {
+    path: "/post-preview",
+    name: "PostPreview",
+    component: PostPreview,
     beforeEnter: requireAuth,
   },
   {

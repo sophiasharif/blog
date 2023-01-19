@@ -6,14 +6,13 @@
         v-for="blog in blogs"
         :class="blog.photoSize"
         :key="blog.id"
-        :style="`background: url(${blog.coverPhoto}); 
+        :style="`background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(${blog.coverPhoto}); 
           background-size: cover;
           background-position: center;
           background-repeat: no-repeat;`"
       >
-        <!-- <p>{{ blog.date }}</p>
-        <h2>{{ blog.title }}</h2>
-        <h4>{{ blog.subtitle }}</h4> -->
+        <h2 class="title">{{ blog.title }}</h2>
+        <p class="subtitle">{{ blog.date }}</p>
       </div>
     </div>
   </div>
@@ -62,8 +61,8 @@ getBlogs();
 .card {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  align-items: left;
+  justify-content: center;
+  align-items: center;
   background: #353535;
   font-size: 3rem;
   color: #fff;
@@ -71,9 +70,10 @@ getBlogs();
     rgba(2, 8, 20, 0.1) 0px 0.075rem 0.175rem;
   height: 100%;
   width: 100%;
-  border-radius: 4px;
+  border-radius: 8px;
   transition: all 500ms;
   overflow: hidden;
+  padding: .5rem;
 }
 .card:hover {
   box-shadow: rgba(2, 8, 20, 0.1) 0px 0.35em 1.175em,
@@ -101,22 +101,16 @@ getBlogs();
 .card {
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
   margin: 0 auto;
+  text-align: center;
 }
-.card p {
-  color: var(--gray-light);
+.card .title {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 1000;
+}
+.card .subtitle {
+  margin: 0;
   font-style: italic;
-  margin-bottom: 0.5rem;
-  font-size: 1rem;
-}
-.card h2 {
-  margin: 0.5rem 0;
-  font-size: 1rem;
-  font-weight: 500;
-}
-.card h4 {
-  font-weight: 300;
-  font-style: italic;
-  margin-top: 0.5rem;
   font-size: 1rem;
 }
 </style>
