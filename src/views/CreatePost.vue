@@ -20,6 +20,13 @@
           @change="fileChange"
         />
         <button class="preview" @click="enablePreview">Preview Photo</button>
+        <label for="photo-size">Photo Size:</label>
+        <select name="cars" id="cars" v-model="blogStore.photoSize">
+          <option value="card-small">Small</option>
+          <option value="card-wide">Wide</option>
+          <option value="card-tall">Tall</option>
+          <option value="card-large">Large</option>
+        </select>
       </div>
       <div id="editor">
         <QuillEditor
@@ -80,6 +87,14 @@ export default {
         }, 10000);
         return;
       }
+      if (this.blogStore.photoSize.length === 0) {
+        this.error = true;
+        this.errorMessage = "Please choose a size for the photo!";
+        setTimeout(() => {
+          this.error = false;
+        }, 10000);
+        return;
+      }
       // check cover photo is uploaded
       if (!this.file) {
         this.error = true;
@@ -89,33 +104,28 @@ export default {
         }, 5000);
         return;
       }
-      this.uploadBlogInfo()
+      this.uploadBlogInfo();
     },
     async uploadBlogInfo() {
-      
       this.loading = true;
       const col = collection(db, "blogs");
       const imageRef = ref(storage, `images/${this.blogStore.coverPhotoName}`);
-      
+
       // upload cover image to storage, get URL
       await uploadBytes(imageRef, this.file);
-      const downloadURL = await getDownloadURL(imageRef)
-      let image = new Image()
-      image.src = downloadURL;
+      const downloadURL = await getDownloadURL(imageRef);
 
-      image.onload = () => {
-        // send data to firebase
-       addDoc(col, {
+      // upload doc
+      await addDoc(col, {
         title: this.blogStore.title,
         subtitle: this.blogStore.subtitle,
         content: this.blogStore.content,
         date: Timestamp.now(),
         coverPhoto: downloadURL,
-        imageHeight: image.naturalHeight,
-        imageWidth: image.naturalWidth
-      })
-      .then(() => this.$router.push("/"))
-      }
+        photoSize: this.blogStore.photoSize,
+      });
+
+      this.$router.push("/");
     },
     fileChange() {
       this.file = this.$refs.blogPhoto.files[0];

@@ -7,6 +7,7 @@ export const useBlogStore = defineStore('blogStore', {
         content: "",
         coverPhotoName: "",
         coverPhotoURL: "",
+        photoSize: "",
         previewEnabled: false
     })
 })
