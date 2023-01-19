@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="wrapper">
     <!-- conditional components -->
     <BlogPhotoPreview v-if="blogStore.previewEnabled" />
     <LoadingSign v-if="loading" />
@@ -97,22 +97,25 @@ export default {
       const col = collection(db, "blogs");
       const imageRef = ref(storage, `images/${this.blogStore.coverPhotoName}`);
       
-      // upload cover image to storage
+      // upload cover image to storage, get URL
       await uploadBytes(imageRef, this.file);
-      
-      // upload text to firestore
       const downloadURL = await getDownloadURL(imageRef)
-      await addDoc(col, {
+      let image = new Image()
+      image.src = downloadURL;
+
+      image.onload = () => {
+        // send data to firebase
+       addDoc(col, {
         title: this.blogStore.title,
         subtitle: this.blogStore.subtitle,
         content: this.blogStore.content,
         date: Timestamp.now(),
-        coverPhoto: downloadURL
+        coverPhoto: downloadURL,
+        imageHeight: image.naturalHeight,
+        imageWidth: image.naturalWidth
       })
-
-      // send to home screen
-      this.$router.push("/");
-      
+      .then(() => this.$router.push("/"))
+      }
     },
     fileChange() {
       this.file = this.$refs.blogPhoto.files[0];
@@ -126,4 +129,9 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.wrapper {
+  width: 80%;
+  margin: 6rem auto 0 auto;
+}
+</style>

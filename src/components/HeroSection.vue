@@ -33,7 +33,7 @@ img {
   position: absolute;
 }
 #phoenix {
-  animation: up-down 7s ease infinite;
+  animation: up-down 12s ease infinite;
   right: 30%;
   top: 12%;
   width: 28%;
@@ -45,31 +45,31 @@ img {
   width: 10%;
 }
 #small-bird-2 {
-  animation: up-down 5s ease infinite;
+  animation: down-up 10s ease infinite;
   right: 43%;
   top: 4%;
   width: 12%;
 }
 #small-bird-3 {
-  animation: up-down 7.5s ease infinite;
+  animation: down-up 14s ease infinite;
   right: 43%;
   top: 45%;
   width: 12%;
 }
 #scrap-1 {
-  animation: up-down 5.5s ease infinite;
+  animation: up-down 9s ease infinite;
   left: 40%;
   top: 35%;
   width: 5%;
 }
 #scrap-2 {
-  animation: up-down 4.5s ease infinite;
+  animation: down-up 11s ease infinite;
   left: 23%;
   top: 55%;
   width: 5%;
 }
 #scrap-3 {
-  animation: up-down 3s ease infinite;
+  animation: up-down 7s ease infinite;
   left: 10%;
   top: 15%;
   width: 4%;
@@ -77,7 +77,9 @@ img {
 h1 {
   color: var(--cream);
   text-align: left;
-  font-size: 4vw;
+  /* image will hug the viewport either vertically or horizontally --
+  the calculation below keeps font size constant regardless of which is the case */
+  font-size: min(4vw, calc(100vh * var(--aspect-ratio) / 25));
   position: absolute;
   width: 20%;
   left: 15%;
@@ -86,14 +88,16 @@ h1 {
 .buttons button {
   position: absolute;
   left: 15%;
-  top: 47%;
+  top: 46%;
 
   background-color: var(--cream); 
   border: none;
   font: inherit;
-  padding: .7rem 1rem;
   border-radius: 1rem;
   font-size: 1rem;
+  width: 10%;
+  height: 5%;
+  font-size: min(1.3vw, calc(100vh * var(--aspect-ratio) * (1.3/100)));
 }
 
 @keyframes up-down {
@@ -103,6 +107,15 @@ h1 {
   }
   50% {
     transform: translateY(0vw);
+  }
+}
+@keyframes down-up {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(1.5vh);
   }
 }
 </style>

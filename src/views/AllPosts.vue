@@ -3,6 +3,7 @@
   <h1>Sophia Sharif</h1>
   <div class="line"></div>
   <div class="blog" v-for="blog in blogs" :key="blog.id">
+    <img :src="blog.coverPhoto" alt="">
     <p>{{ blog.date }}</p>
     <h2>{{ blog.title }}</h2>
     <h4>{{ blog.subtitle }}</h4>
@@ -17,6 +18,8 @@ import { ref } from "@vue/reactivity";
 import { db } from "../firebase/config";
 import { collection, getDocs, query, orderBy } from "firebase/firestore";
 import toDateTime from "../composables/toDateTime";
+
+const test = "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.leapingbunny.org%2F&psig=AOvVaw3wXBwD1X7_z_eR_N_Y34A9&ust=1674176944359000&source=images&cd=vfe&ved=0CA4QjRxqFwoTCOjw7aG50vwCFQAAAAAdAAAAABAE"
 
 let blogs = ref([]);
 let colRef = collection(db, "blogs");
@@ -33,6 +36,7 @@ async function getBlogs() {
         subtitle: doc.data().subtitle,
         content: doc.data().content,
         date: toDateTime(doc.data().date.seconds),
+        coverPhoto: doc.data().coverPhoto
       });
     });
     blogs.value = docs;
