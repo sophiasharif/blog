@@ -23,6 +23,7 @@ export default {
   --cream: #FFDEAD;
   --white: #EDEDF1;
   --gray-light: #CAC8D0;
+  --accent: #FFA500;
 }
 *, *::before, *::after {
   box-sizing: border-box;

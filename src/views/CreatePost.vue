@@ -1,8 +1,8 @@
 <template>
+  <BlogPhotoPreview v-if="blogStore.previewEnabled" />
+  <LoadingSign v-if="loading" />
   <div class="wrapper">
     <!-- conditional components -->
-    <BlogPhotoPreview v-if="blogStore.previewEnabled" />
-    <LoadingSign v-if="loading" />
     <!--  post component -->
     <div class="error-message" v-if="error">
       <p><span class="error">Error: </span> {{ errorMessage }}</p>
@@ -10,6 +10,7 @@
     <div class="blog-info">
       <input type="text" placeholder="Title" v-model="blogStore.title" />
       <input type="text" placeholder="Subtitle" v-model="blogStore.subtitle" />
+      <input type="text" placeholder="Description" v-model="blogStore.description" />
       <div class="upload-file">
         <label for="blog-photo">Upload Cover Photo</label>
         <input
@@ -77,11 +78,12 @@ export default {
       if (
         this.blogStore.title.length === 0 ||
         this.blogStore.subtitle.length === 0 ||
+        this.blogStore.description.length === 0 ||
         this.blogStore.content.length === 0
       ) {
         this.error = true;
         this.errorMessage =
-          "Please make sure the blog title, subtitle, and content have been filled out!";
+          "Please make sure the blog title, subtitle, description, and content have been filled out!";
         setTimeout(() => {
           this.error = false;
         }, 10000);
@@ -96,7 +98,7 @@ export default {
         return;
       }
       // check cover photo is uploaded
-      if (!this.file) {
+      if (!this.blogStore.coverPhotoURL) {
         this.error = true;
         this.errorMessage = "Please add a cover photo!";
         setTimeout(() => {
@@ -119,6 +121,7 @@ export default {
       await addDoc(col, {
         title: this.blogStore.title,
         subtitle: this.blogStore.subtitle,
+        description: this.blogStore.description,
         content: this.blogStore.content,
         date: Timestamp.now(),
         coverPhoto: downloadURL,

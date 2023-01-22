@@ -39,7 +39,7 @@ async function getBlogs() {
         content: doc.data().content,
         date: toDateTime(doc.data().date.seconds),
         coverPhoto: doc.data().coverPhoto,
-        photoSize: doc.data().photoSize
+        photoSize: doc.data().photoSize,
       });
     });
     blogs.value = docs;
@@ -73,26 +73,29 @@ getBlogs();
   border-radius: 8px;
   transition: all 500ms;
   overflow: hidden;
-  padding: .5rem;
+  padding: 0.5rem;
 }
 .card:hover {
   box-shadow: rgba(2, 8, 20, 0.1) 0px 0.35em 1.175em,
     rgba(2, 8, 20, 0.08) 0px 0.175em 0.5em;
   transform: translateY(-3px) scale(1.02);
 }
-.card-tall {
-  grid-row: span 2 / auto;
+@media (min-width: 600px) {
+  .card-tall {
+    grid-row: span 2 / auto;
+  }
+  .card-wide {
+    grid-column: span 2 / auto;
+  }
+  .card-small {
+    grid-column: span 1 / auto;
+  }
+  .card-large {
+    grid-row: span 2 / auto;
+    grid-column: span 2 / auto;
+  }
 }
-.card-wide {
-  grid-column: span 2 / auto;
-}
-.card-small {
-  grid-column: span 1 / auto;
-}
-.card-large {
-  grid-row: span 2 / auto;
-  grid-column: span 2 / auto;
-}
+
 .wrapper {
   padding: 2rem;
   margin: 3rem auto 0 auto;
@@ -106,7 +109,7 @@ getBlogs();
 .card .title {
   margin: 0;
   font-size: 1.75rem;
-  font-weight: 1000;
+  font-weight: 800;
 }
 .card .subtitle {
   margin: 0;

@@ -7,6 +7,7 @@ export const useBlogStore = defineStore("blogStore", {
   state: () => ({
     title: "",
     subtitle: "",
+    description: "",
     content: "",
     coverPhotoName: "",
     coverPhotoURL: "",
@@ -26,6 +27,7 @@ export const useBlogStore = defineStore("blogStore", {
               id: doc.id,
               title: doc.data().title,
               subtitle: doc.data().subtitle,
+              description: doc.data().description,
               content: doc.data().content,
               date: toDateTime(doc.data().date.seconds),
               coverPhoto: doc.data().coverPhoto,
