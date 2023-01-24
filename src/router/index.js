@@ -4,6 +4,7 @@ import CreatePost from "../views/CreatePost.vue";
 import PostPreview from "../views/PostPreview.vue";
 import AllPosts from "../views/AllPosts.vue";
 import LoginView from "../views/LoginView.vue";
+import ViewPost from "../views/ViewPost.vue";
 
 // firebase imports
 import { auth } from "../firebase/config";
@@ -44,6 +45,11 @@ const routes = [
     path: "/login",
     name: "Login",
     component: LoginView,
+  },
+  {
+    path: "/blogs/:title",
+    name: "ViewPost",
+    component: ViewPost,
   },
 ];
 

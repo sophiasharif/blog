@@ -9,11 +9,13 @@ export const useBlogStore = defineStore("blogStore", {
     subtitle: "",
     description: "",
     content: "",
+    file: null,
     coverPhotoName: "",
     coverPhotoURL: "",
     photoSize: "",
     previewEnabled: false,
-    blogs: []
+    blogs: [],
+    blogsLoaded: false,
   }),
   actions: {
     async getBlogs() {
@@ -34,10 +36,13 @@ export const useBlogStore = defineStore("blogStore", {
               photoSize: doc.data().photoSize,
             });
           });
-          console.log(this.blogs)
+          this.blogsLoaded = true;
         } catch (e) {
           console.log("ERROR: ", e);
         }
     },
+    getBlog() {
+      return ["test"]
+    }
   },
 });

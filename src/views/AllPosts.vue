@@ -1,9 +1,10 @@
 <template>
   <div class="wrapper">
-    <div class="photo-grid">
+    <div class="photo-grid" v-if="blogStore.blogsLoaded">
       <div
         class="card"
-        v-for="blog in blogs"
+        v-for="blog in blogStore.blogs"
+        @click="handleClick(blog.title)"
         :class="blog.photoSize"
         :key="blog.id"
         :style="`background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(${blog.coverPhoto}); 
@@ -19,35 +20,16 @@
 </template>
 
 <script setup>
-import { ref } from "@vue/reactivity";
-import { db } from "../firebase/config";
-import { collection, getDocs, query, orderBy } from "firebase/firestore";
-import toDateTime from "../composables/toDateTime";
-let blogs = ref([]);
-let colRef = collection(db, "blogs");
-colRef = query(colRef, orderBy("date", "desc"));
-blogs = ref([]);
-async function getBlogs() {
-  try {
-    const snap = await getDocs(colRef);
-    let docs = [];
-    snap.docs.forEach((doc) => {
-      docs.push({
-        id: doc.id,
-        title: doc.data().title,
-        subtitle: doc.data().subtitle,
-        content: doc.data().content,
-        date: toDateTime(doc.data().date.seconds),
-        coverPhoto: doc.data().coverPhoto,
-        photoSize: doc.data().photoSize,
-      });
-    });
-    blogs.value = docs;
-  } catch (e) {
-    console.log("ERROR: ", e);
-  }
+import { useBlogStore } from "@/stores/BlogStore";
+import { useRouter } from "vue-router";
+import { toKebabCase } from "../composables/helpers"
+
+const blogStore = useBlogStore();
+const router = useRouter();
+
+function handleClick(title) {
+  router.push('/blogs/' + toKebabCase(title))
 }
-getBlogs();
 </script>
 
 <style scoped>

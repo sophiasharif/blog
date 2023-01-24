@@ -10,7 +10,11 @@
     <div class="blog-info">
       <input type="text" placeholder="Title" v-model="blogStore.title" />
       <input type="text" placeholder="Subtitle" v-model="blogStore.subtitle" />
-      <input type="text" placeholder="Description" v-model="blogStore.description" />
+      <textarea
+        type="text"
+        placeholder="Description"
+        v-model="blogStore.description"
+      />
       <div class="upload-file">
         <label for="blog-photo">Upload Cover Photo</label>
         <input
@@ -20,7 +24,6 @@
           accept=".png, .jpg, .jpeg"
           @change="fileChange"
         />
-        <button class="preview" @click="enablePreview">Preview Photo</button>
         <label for="photo-size">Photo Size:</label>
         <select name="cars" id="cars" v-model="blogStore.photoSize">
           <option value="card-small">Small</option>
@@ -28,6 +31,13 @@
           <option value="card-tall">Tall</option>
           <option value="card-large">Large</option>
         </select>
+        <button
+          class="preview"
+          @click="enablePreview"
+          :disabled="this.blogStore.coverPhotoURL.length == 0 || this.blogStore.photoSize.length == 0"
+        >
+          Preview Photo
+        </button>
       </div>
       <div id="editor">
         <QuillEditor
@@ -114,7 +124,7 @@ export default {
       const imageRef = ref(storage, `images/${this.blogStore.coverPhotoName}`);
 
       // upload cover image to storage, get URL
-      await uploadBytes(imageRef, this.file);
+      await uploadBytes(imageRef, this.blogStore.file);
       const downloadURL = await getDownloadURL(imageRef);
 
       // upload doc
@@ -128,12 +138,24 @@ export default {
         photoSize: this.blogStore.photoSize,
       });
 
+      // reset blogStore
+      this.blogStore.title= "";
+      this.blogStore.subtitle= "";
+      this.blogStore.description= "";
+      this.blogStore.content= "";
+      this.blogStore.file= null;
+      this.blogStore.coverPhotoName= "";
+      this.blogStore.coverPhotoURL= "";
+      this.blogStore.photoSize= "";
+      this.blogStore.previewEnabled= false;
+
+      // reroute to home
       this.$router.push("/");
     },
     fileChange() {
-      this.file = this.$refs.blogPhoto.files[0];
-      this.blogStore.coverPhotoName = this.file.name;
-      this.blogStore.coverPhotoURL = URL.createObjectURL(this.file);
+      this.blogStore.file = this.$refs.blogPhoto.files[0];
+      this.blogStore.coverPhotoName = this.blogStore.file.name;
+      this.blogStore.coverPhotoURL = URL.createObjectURL(this.blogStore.file);
     },
     enablePreview() {
       this.blogStore.previewEnabled = true;
