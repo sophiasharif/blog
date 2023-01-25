@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { db } from "../firebase/config";
 import { collection, getDocs, query, orderBy } from "firebase/firestore";
-import toDateTime from "../composables/toDateTime";
+import {toDateTime} from "../composables/helpers";
 
 export const useBlogStore = defineStore("blogStore", {
   state: () => ({
