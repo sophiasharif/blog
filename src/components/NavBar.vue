@@ -9,8 +9,8 @@
     <div v-if="user" class="admin-controls">
       <router-link to="/create-post">Create Post</router-link>
       <router-link to="/post-preview">Post Preview</router-link>
-      <input type="checkbox" v-model="blogStore.editEnabled" v-if="$route.name == 'AllPosts'"/>
       <span id="logout" @click="logout">Log Out</span>
+      <input type="checkbox" v-model="blogStore.editEnabled" v-if="$route.name == 'AllPosts'"/>
     </div>
   </nav>
 </template>
