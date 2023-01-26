@@ -23,6 +23,9 @@ import { useBlogStore } from "../stores/BlogStore";
 import LoadingSign from "../components/LoadingSign.vue"
 import { useRoute } from "vue-router";
 import {toTitleCase} from "../composables/helpers"
+import { onMounted } from "@vue/runtime-core";
+import { analytics } from "@/firebase/config";
+import { logEvent } from "@firebase/analytics";
 
 const blogStore = useBlogStore();
 let currentBlog = ref();
@@ -40,6 +43,10 @@ async function getCurrentBlog() {
     })[0]
 }
 getCurrentBlog()
+
+onMounted(() => {
+  logEvent(analytics, 'page_view', { name: blogTitle});
+})
 
 </script>
 

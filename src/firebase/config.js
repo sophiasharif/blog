@@ -23,7 +23,5 @@ const storage = getStorage(app);
 const auth = getAuth(app);
 const analytics = getAnalytics(app);
 
-logEvent(analytics, 'first_visit');
 
-
-export { db, storage, auth };
+export { db, storage, auth, analytics };
