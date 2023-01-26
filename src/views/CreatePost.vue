@@ -160,19 +160,12 @@ export default {
         content: this.blogStore.content,
         date: Timestamp.now(),
         coverPhoto: downloadURL,
+        coverPhotoName: this.blogStore.coverPhotoName,
         photoSize: this.blogStore.photoSize,
       });
 
       // reset blogStore
-      this.blogStore.title = "";
-      this.blogStore.subtitle = "";
-      this.blogStore.description = "";
-      this.blogStore.content = "";
-      this.blogStore.file = null;
-      this.blogStore.coverPhotoName = "";
-      this.blogStore.coverPhotoURL = "";
-      this.blogStore.photoSize = "";
-      this.blogStore.previewEnabled = false;
+      this.blogStore.reset()
 
       // reroute to home
       this.$router.push("/");

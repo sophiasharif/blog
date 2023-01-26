@@ -5,6 +5,7 @@ import PostPreview from "../views/PostPreview.vue";
 import AllPosts from "../views/AllPosts.vue";
 import LoginView from "../views/LoginView.vue";
 import ViewPost from "../views/ViewPost.vue";
+import EditPost from "../views/EditPost.vue";
 
 // firebase imports
 import { auth } from "../firebase/config";
@@ -34,6 +35,12 @@ const routes = [
     path: "/post-preview",
     name: "PostPreview",
     component: PostPreview,
+    beforeEnter: requireAuth,
+  },
+  {
+    path: "/edit/:title",
+    name: "EditPost",
+    component: EditPost,
     beforeEnter: requireAuth,
   },
   {

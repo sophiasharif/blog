@@ -18,7 +18,7 @@ export default {
       blogStore: useBlogStore()
     }
   },
-  mounted() {
+  created() {
     this.blogStore.getBlogs()
   }
 };
